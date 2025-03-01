@@ -1,5 +1,6 @@
 import {
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -9,6 +10,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import React from "react";
+import { Sidebar } from "~/components/Sidebar";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,6 +27,11 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
+  // Thêm hàm xử lý đóng sidebar
+  const closeSidebar = () => setIsSidebarOpen(false);
+
   return (
     <html lang="en">
       <head>
@@ -33,7 +41,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <div className="flex min-h-screen relative">
+          <button
+            className="lg:hidden fixed top-4 left-4 z-[1] p-2 rounded-md bg-gray-800 text-white"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={ "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+
+          <Sidebar isSidebarOpen={isSidebarOpen} onClose={closeSidebar} />
+
+          <main 
+            className="flex-1 pt-20 xl:pt-8 p-4 xl:p-8 bg-gray-50 lg:ml-0 overflow-y-auto"
+            onClick={() => isSidebarOpen && closeSidebar()}
+          >
+            {children}
+          </main>
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
