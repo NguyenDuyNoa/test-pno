@@ -18,7 +18,7 @@ export function TaskCard({ task, onDelete, onUpdate }: Props) {
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow border border-gray-200 flex flex-col h-full justify-between">
+      <div className="bg-white rounded-xl shadow-md p-4 xl:p-5 hover:shadow-lg transition-shadow border border-gray-200 flex flex-col h-full justify-between">
         <div className="flex flex-col">
           <div className="flex gap-1 justify-between items-start mb-4">
             <h3 className="text-lg font-semibold text-gray-900">
@@ -60,7 +60,7 @@ export function TaskCard({ task, onDelete, onUpdate }: Props) {
                     };
                     onUpdate(updatedTask as Task);
                   }}
-                  className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                  className="h-4 w-4 flex-shrink-0 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                 />
                 <span className="ml-2 text-sm text-gray-600">
                   {subtask.title}

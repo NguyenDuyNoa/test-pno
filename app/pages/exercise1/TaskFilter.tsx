@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
   onFilterChange: (status: string) => void;
   onSearchChange: (query: string) => void;
@@ -13,6 +11,15 @@ export function TaskFilter({
   currentFilter,
   searchQuery,
 }: Props) {
+  const handleButtonScroll = (button: HTMLButtonElement) => {
+    const container = button.parentElement;
+    if (container) {
+      const scrollLeft =
+        button.offsetLeft - (container.offsetWidth - button.offsetWidth) / 2;
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 mb-6 xl:mb-8 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
       <div className="flex-1 relative">
@@ -43,17 +50,20 @@ export function TaskFilter({
         />
       </div>
 
-      <div className="flex gap-3 overflow-x-auto">
+      <div className="flex gap-3 overflow-x-auto scrollbar-hide">
         {["all", "todo", "inProgress", "done"].map((status) => (
           <button
             key={status}
-            onClick={() => onFilterChange(status)}
+            onClick={(e) => {
+              onFilterChange(status);
+              handleButtonScroll(e.currentTarget);
+            }}
             className={`cursor-pointer px-3 py-2 xl:px-5 xl:py-3 rounded-xl font-medium whitespace-nowrap
-                       transition-all duration-300 transform hover:scale-105
+                       transition-all duration-300 transform 
                        ${
                          currentFilter === status
                            ? "bg-indigo-600 text-white shadow-md hover:bg-indigo-700"
-                           : "bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200"
+                           : "bg-gray-50 text-gray-700 hover:bg-gray-200 border border-gray-200"
                        }`}
           >
             {status === "all"

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { sampleTasks } from '~/data/sampleTasks';
 import type { Task } from '~/types/Task';
-import { TaskList } from './TaskList';
 import { TaskFilter } from './TaskFilter';
 import { TaskForm } from './TaskForm';
+import { TaskCard } from './TaskCard';
 
 export function Exercise1() {
   const [tasks, setTasks] = useState<Task[]>(sampleTasks);
@@ -12,7 +12,7 @@ export function Exercise1() {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const addTask = (newTask: Task) => {
-    setTasks([...tasks, newTask]);
+    setTasks([newTask, ...tasks]);
     setIsFormOpen(false);
   };
 
@@ -38,7 +38,7 @@ export function Exercise1() {
         <h1 className="text-3xl font-bold text-gray-900">Quản Lý Công Việc</h1>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors cursor-pointer"
         >
           Thêm Công Việc
         </button>
@@ -51,11 +51,16 @@ export function Exercise1() {
         searchQuery={searchQuery}
       />
       
-      <TaskList
-        tasks={filteredTasks}
-        onDelete={deleteTask}
-        onUpdate={updateTask}
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-6 mt-6">
+        {filteredTasks.map(task => (
+          <TaskCard
+            key={task.id}
+            task={task}
+            onDelete={deleteTask}
+            onUpdate={updateTask}
+          />
+        ))}
+      </div>
 
       {isFormOpen && (
         <TaskForm
